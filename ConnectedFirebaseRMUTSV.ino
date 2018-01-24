@@ -9,7 +9,10 @@
 #define wifiSSID "MastreEWTC_2.4G"
 #define wifiPassword "12345abcde"
 
+#define firebaseHost "rmutsvnodemcu.firebaseio.com"
+#define firebaseKey "29tXoQn9iydCSFjgCp8EvtcA4LhqLtAfRZQjQI2y"
 
+int intIndex = 0;
 
 
 
@@ -39,6 +42,9 @@ void setup() {
     Serial.println(WiFi.localIP());
     
 
+//ส่วนของการเชื่อมต่อ Firebase
+    Firebase.begin(firebaseHost, firebaseKey);
+
   
 
 } // setup
@@ -51,7 +57,21 @@ void loop() {
 //  delay(2000);
 
 
-  
+//Check Conneced Firebase
+Firebase.setInt("myTimes", intIndex);
+if (Firebase.failed()) 
+  { 
+//    เมื่อก็ตามที่ไม่สามารถเข้า Firebase
+      Serial.print("Cannot Connected Firebase : ");
+      Serial.println(Firebase.error()); 
+      return;
+  }
+
+      Serial.print("Success Connected Firebase Times ==> ");
+      Serial.println(Firebase.getInt("myTimes"));
+
+      intIndex++;
+      delay(500);
 
 
 
