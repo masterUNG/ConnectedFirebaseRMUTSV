@@ -3,6 +3,10 @@
 #include <FirebaseArduino.h>
 
 //Explicit
+int myOutput = D0;
+int myDelayTime = 1000;
+int intIndex = 0;
+int intSwitch = 0;
 
 //การกำหนดค่าคงที่
 //String wifiSSID = "MastreEWTC_2.4G";
@@ -12,11 +16,14 @@
 #define firebaseHost "rmutsvnodemcu.firebaseio.com"
 #define firebaseKey "29tXoQn9iydCSFjgCp8EvtcA4LhqLtAfRZQjQI2y"
 
-int intIndex = 0;
+
 
 
 
 void setup() {
+
+//  ส่วนที่กำหนด การส่ง Digital Out จากขาของ Node
+  pinMode(myOutput, OUTPUT);
   
 //  การกำหนดช่องทางในการ Monitor
   Serial.begin(9600);
@@ -73,7 +80,22 @@ if (Firebase.failed())
       intIndex = Firebase.getInt("myTimes");
 
       intIndex++;
-      delay(500);
+
+      intSwitch = Firebase.getInt("Switch");
+
+      if (intSwitch == 1) 
+        {
+        //  for myOutput
+        digitalWrite(myOutput, LOW);   // turn the LED on (HIGH is the voltage level)
+        } 
+        else 
+        {
+         digitalWrite(myOutput, HIGH); 
+        }
+      
+
+      
+      delay(myDelayTime);
 
 
 
